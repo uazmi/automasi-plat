@@ -1,0 +1,51 @@
+# import module random dan os, module os digunakan untuk melibatkan os menyimpan data dalam notepad
+
+import random
+import os
+
+# membuat fungsi untuk generate otomatis kota, 4 angka acak, dan 2 huruf di belakang angka
+def generate_nopol(kota):
+    nopol = []
+
+    # deteksi kota
+    if kota == "Jakarta":
+        nopol.append("B")
+    elif kota == "Bogor":
+        nopol.append("F")
+    else:
+        raise ValueError("Kota tidak valid")
+    
+    # dalam rentang 4, dicari 4 angka acak dari rentang 1 sampai 9 sebanyak 4 urutan angka, lalu dimasukkan ke dalam
+    # kota yang telah dideteksi
+
+    # 4 angka acak
+    for _ in range(4):
+        nopol.append(str(random.randint(1, 9)))
+    # dua huruf acak
+    for _ in range(2):
+        nopol.append(random.choice("ABCDEFGHIJKLMNOPQRSTUVWXYZ"))
+
+    #disatukan dalam list nopol
+    return "".join(nopol)
+
+# fungsi menyimpan, setelah dipanggil melalui fungsi di atas, menyimpannya dengan fungsi write ke dalam file .txt
+def simpan_ke_file(kota, plat_nomor):
+    with open(f'{kota.lower()}.txt', 'a') as file:
+        file.write(plat_nomor + '\n')
+
+# fungsi menyimpan berulang, jika ingin generate lebih banyak nomor, tidak perlu membuat file .txt yang banyak
+def generate_dan_simpan(kota):
+    if not os.path.exists(f'{kota.lower()}.txt'):
+        with open(f'{kota.lower()}.txt', 'w') as file:
+            pass  #check file apakah tersedia, kalau ada, pass
+    
+    plat_nomor = generate_nopol(kota)
+    simpan_ke_file(kota, plat_nomor)
+
+# Generate dan simpan plat nomor untuk kota Jakarta
+for _ in range(5):  # test generate dan simpan 5 plat nomor polisi kota Jakarta
+    generate_dan_simpan("Jakarta")
+
+# Generate dan simpan plat nomor untuk kota Bogor
+for _ in range(5):  # test generate dan simpan 5 plat nomor polisi kota Bogor
+    generate_dan_simpan("Bogor")
